@@ -1,0 +1,629 @@
+/* ==========================================================================
+   AI Resume & Portfolio Builder - 스타일시트 (style.css)
+   초보자도 이해하기 쉬운 직관적이고 깔끔한 모던 CSS
+   ========================================================================== */
+
+/* 1. 기본 스타일 리셋 및 공통 변수 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f1f5f9; /* 편안한 연회색 배경 */
+    color: #1e293b;            /* 짙은 차콜 텍스트 */
+    line-height: 1.6;
+    padding: 24px 16px;
+}
+
+/* 2. 전체 앱 레이아웃 컨테이너 */
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* 3. 헤더 영역 */
+.header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.header .subtitle {
+    font-size: 1rem;
+    color: #64748b;
+}
+
+/* 4. 메인 콘텐츠: 2단 분할 레이아웃 (데스크톱 기준 좌/우) */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* 화면이 좁은 모바일 및 태블릿에서는 위/아래 1단으로 자동 변경 */
+@media (max-width: 920px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 5. 카드 공통 스타일 (폼 영역 & 결과 영역) */
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+/* 6. 입력 폼 요소 스타일 */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.required {
+    color: #ef4444;
+    font-weight: bold;
+}
+
+input[type="text"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    color: #0f172a;
+    transition: all 0.2s ease-in-out;
+    font-family: inherit;
+}
+
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* 7. 라디오 모드 카드 스타일 (Prompt A vs B) */
+.radio-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 600px) {
+    .radio-group {
+        grid-template-columns: 1fr;
+    }
+}
+
+.radio-card {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.radio-card:hover {
+    border-color: #94a3b8;
+    background-color: #f1f5f9;
+}
+
+.radio-card input[type="radio"] {
+    margin-top: 4px;
+    margin-right: 10px;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+
+.radio-card input[type="radio"]:checked + .radio-content {
+    color: #1d4ed8;
+}
+
+.radio-title {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 3px;
+}
+
+.radio-desc {
+    display: block;
+    font-size: 0.8rem;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+/* 7-1. 테마 선택기 스타일 */
+.theme-selector-group {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+@media (max-width: 600px) {
+    .theme-selector-group {
+        grid-template-columns: 1fr;
+    }
+}
+
+.theme-option {
+    cursor: pointer;
+}
+
+.theme-option input[type="radio"] {
+    display: none;
+}
+
+.theme-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 8px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.theme-color-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    margin-bottom: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.orange-dot { background: linear-gradient(135deg, #fb923c, #ea580c); }
+.navy-dot { background: linear-gradient(135deg, #3b82f6, #1e3a8a); }
+.modern-dot { background: linear-gradient(135deg, #10b981, #0f766e); }
+
+.theme-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 2px;
+}
+
+.theme-tag {
+    font-size: 0.7rem;
+    color: #64748b;
+}
+
+.theme-option input[type="radio"]:checked + .theme-badge {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.15);
+}
+
+.theme-option input[type="radio"]:checked + .theme-badge-orange {
+    border-color: #ea580c;
+    background-color: #fff7ed;
+}
+
+.theme-option input[type="radio"]:checked + .theme-badge-navy {
+    border-color: #1e3a8a;
+    background-color: #eff6ff;
+}
+
+.theme-option input[type="radio"]:checked + .theme-badge-modern {
+    border-color: #0f766e;
+    background-color: #f0fdfa;
+}
+
+/* 8. 버튼 스타일 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    width: 100%;
+    background-color: #2563eb;
+    color: #ffffff;
+    font-size: 1.05rem;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 10px -1px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background-color: #f1f5f9;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+}
+
+.btn-secondary:hover {
+    background-color: #e2e8f0;
+    color: #0f172a;
+}
+
+/* 9. 에러 알림 박스 */
+.alert-box {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.alert-box.error {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+/* 10. 결과 영역 툴바 및 플레이스홀더 */
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 10px;
+}
+
+.result-header .section-title {
+    margin-bottom: 0;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.action-toolbar {
+    display: flex;
+    gap: 8px;
+}
+
+.placeholder-view {
+    text-align: center;
+    padding: 80px 20px;
+    color: #94a3b8;
+}
+
+.placeholder-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+/* 11. 로딩 스피너 애니메이션 */
+.loading-view {
+    text-align: center;
+    padding: 80px 20px;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 16px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 6px;
+}
+
+.loading-subtext {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* 12. 마크다운 결과 렌더링 스타일 */
+.markdown-body {
+    background-color: #ffffff;
+    font-size: 0.95rem;
+    color: #1e293b;
+    max-height: 650px;
+    overflow-y: auto;
+    padding: 12px 6px;
+    line-height: 1.7;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+    color: #0f172a;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.markdown-body h1 {
+    font-size: 1.4rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 6px;
+}
+
+.markdown-body h2 {
+    font-size: 1.2rem;
+    color: #1d4ed8;
+}
+
+.markdown-body h3 {
+    font-size: 1.05rem;
+}
+
+.markdown-body p {
+    margin-bottom: 12px;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+    margin-bottom: 16px;
+    padding-left: 20px;
+}
+
+.markdown-body li {
+    margin-bottom: 6px;
+}
+
+.markdown-body strong {
+    color: #0f172a;
+}
+
+.markdown-body hr {
+    border: 0;
+    height: 1px;
+    background-color: #e2e8f0;
+    margin: 20px 0;
+}
+
+/* 12-1. 디자인 이력서 표지(Cover Card) 스타일 - sample1.png 양식 */
+.resume-cover-card {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+}
+
+.cover-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 28px;
+    color: #ffffff;
+    position: relative;
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+}
+
+.cover-left {
+    flex: 1;
+}
+
+.cover-label {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background-color: rgba(255, 255, 255, 0.25);
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+}
+
+.cover-name {
+    font-size: 1.8rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+    line-height: 1.2;
+}
+
+.cover-role-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: rgba(15, 23, 42, 0.75);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 16px;
+}
+
+.cover-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+}
+
+/* 프로필 아바타 영역 */
+.cover-avatar {
+    width: 68px;
+    height: 68px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    border: 3px solid #ffffff;
+    overflow: hidden;
+}
+
+.cover-avatar svg {
+    width: 44px;
+    height: 44px;
+    fill: #94a3b8;
+}
+
+/* 온라인 도장/인장 (sample1.png 스타일) */
+.cover-stamp {
+    width: 60px;
+    height: 60px;
+    border: 2px dashed #ef4444;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(254, 242, 242, 0.95);
+    color: #dc2626;
+    font-size: 0.65rem;
+    font-weight: 800;
+    transform: rotate(-10deg);
+    box-shadow: 0 2px 5px rgba(220, 38, 38, 0.2);
+    user-select: none;
+}
+
+.cover-stamp-name {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* 표지 하단 정보 바 */
+.cover-meta-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f8fafc;
+    font-size: 0.8rem;
+    color: #64748b;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* 12-2. 테마별 컬러 배색 */
+/* 🍊 오렌지 테마 (sample1.png) */
+.theme-orange .cover-banner {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+}
+.theme-orange .markdown-body h1 {
+    color: #ea580c;
+    border-bottom-color: #fed7aa;
+}
+.theme-orange .markdown-body h2 {
+    color: #c2410c;
+    border-left: 4px solid #ea580c;
+    padding-left: 8px;
+}
+
+/* 👔 네이비 테마 */
+.theme-navy .cover-banner {
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+}
+.theme-navy .markdown-body h1 {
+    color: #1e3a8a;
+    border-bottom-color: #bfdbfe;
+}
+.theme-navy .markdown-body h2 {
+    color: #1d4ed8;
+    border-left: 4px solid #1e3a8a;
+    padding-left: 8px;
+}
+
+/* 🌿 모던 테마 */
+.theme-modern .cover-banner {
+    background: linear-gradient(135deg, #0f766e 0%, #047857 100%);
+}
+.theme-modern .markdown-body h1 {
+    color: #0f766e;
+    border-bottom-color: #a7f3d0;
+}
+.theme-modern .markdown-body h2 {
+    color: #047857;
+    border-left: 4px solid #0f766e;
+    padding-left: 8px;
+}
+
+/* 13. 유틸리티 및 푸터 */
+.hidden {
+    display: none !important;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}

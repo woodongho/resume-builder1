@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume & Portfolio Builder</title>
+    <!-- 외부 스타일시트 연결 -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- 마크다운 서식을 예쁘게 변환해 주는 경량 라이브러리 (Marked.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 헤더 영역 -->
+        <header class="header">
+            <h1>🚀 AI Resume & Portfolio Builder</h1>
+            <p class="subtitle">간단한 정보만 입력하면, Gemini AI가 맞춤형 이력서와 포트폴리오 초안을 즉시 완성해 드립니다.</p>
+        </header>
+
+        <!-- 메인 콘텐츠 영역 (입력 폼 + 결과 미리보기) -->
+        <main class="main-content">
+            <!-- 왼쪽: 입력 폼 섹션 -->
+            <section class="card form-section">
+                <h2 class="section-title">📝 정보 입력</h2>
+                
+                <form id="resumeForm" novalidate>
+                    <!-- 1. 기본 정보: 이름 & 지원 직무 -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">이름 <span class="required">*</span></label>
+                            <input type="text" id="name" name="name" placeholder="예: 홍길동" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">지원 직무 <span class="required">*</span></label>
+                            <input type="text" id="role" name="role" placeholder="예: 백엔드 개발자" required>
+                        </div>
+                    </div>
+
+                    <!-- 2. 어조(Tone) 선택 -->
+                    <div class="form-group">
+                        <label for="tone">문체 및 어조 (Tone)</label>
+                        <select id="tone" name="tone">
+                            <option value="전문적이고 신뢰감 있는" selected>전문적이고 신뢰감 있는 (기본 추천)</option>
+                            <option value="열정적이고 주도적인">열정적이고 주도적인</option>
+                            <option value="담백하고 솔직한">담백하고 솔직한</option>
+                            <option value="논리적이고 데이터 중심적인">논리적이고 데이터 중심적인</option>
+                        </select>
+                    </div>
+
+                    <!-- 3. AI 작성 모드 선택 (Prompt A vs Prompt B) -->
+                    <div class="form-group">
+                        <label>AI 프롬프트 모드</label>
+                        <div class="radio-group">
+                            <label class="radio-card">
+                                <input type="radio" name="prompt_type" value="general" checked>
+                                <div class="radio-content">
+                                    <span class="radio-title">모드 A: 일반 (Standard)</span>
+                                    <span class="radio-desc">읽기 쉽고 친근하며, 필수 항목이 조화로운 표준 이력서</span>
+                                </div>
+                            </label>
+                            <label class="radio-card">
+                                <input type="radio" name="prompt_type" value="expert">
+                                <div class="radio-content">
+                                    <span class="radio-title">모드 B: 전문가 (Expert)</span>
+                                    <span class="radio-desc">STAR 기법, 정량적 수치, 문제 해결 역량을 극대화한 이력서</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 4. 이력서 표지 및 디자인 테마 선택 -->
+                    <div class="form-group">
+                        <label>🎨 이력서 표지 및 디자인 테마</label>
+                        <div class="theme-selector-group">
+                            <label class="theme-option">
+                                <input type="radio" name="resume_theme" value="orange" checked>
+                                <div class="theme-badge theme-badge-orange">
+                                    <span class="theme-color-dot orange-dot"></span>
+                                    <span class="theme-name">산뜻한 오렌지</span>
+                                    <span class="theme-tag">인기 (표지 추천)</span>
+                                </div>
+                            </label>
+                            <label class="theme-option">
+                                <input type="radio" name="resume_theme" value="navy">
+                                <div class="theme-badge theme-badge-navy">
+                                    <span class="theme-color-dot navy-dot"></span>
+                                    <span class="theme-name">전문적인 네이비</span>
+                                    <span class="theme-tag">신뢰감</span>
+                                </div>
+                            </label>
+                            <label class="theme-option">
+                                <input type="radio" name="resume_theme" value="modern">
+                                <div class="theme-badge theme-badge-modern">
+                                    <span class="theme-color-dot modern-dot"></span>
+                                    <span class="theme-name">깔끔한 모던</span>
+                                    <span class="theme-tag">미니멀</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 4. 주요 경력 사항 -->
+                    <div class="form-group">
+                        <label for="experience">주요 경력 사항 <span class="required">*</span></label>
+                        <textarea id="experience" name="experience" rows="4" placeholder="회사명, 근무 기간, 주요 담당 업무를 자유롭게 작성해 주세요.&#10;예: (주)테크컴퍼니 백엔드 엔지니어 (2022.01 ~ 현재)&#10;- REST API 서버 구축 및 데이터베이스 최적화" required></textarea>
+                    </div>
+
+                    <!-- 5. 수행 프로젝트 경험 -->
+                    <div class="form-group">
+                        <label for="projects">수행 프로젝트 <span class="required">*</span></label>
+                        <textarea id="projects" name="projects" rows="4" placeholder="프로젝트 이름, 사용한 기술 스택, 기여한 부분, 문제 해결 경험을 적어주세요.&#10;예: 전자상거래 결제 시스템 고도화&#10;- Python, Flask, Redis 사용&#10;- 대용량 트래픽 병목 현상 개선" required></textarea>
+                    </div>
+
+                    <!-- 생성 버튼 -->
+                    <button type="submit" id="submitBtn" class="btn btn-primary">
+                        ✨ AI 이력서 & 포트폴리오 생성하기
+                    </button>
+                </form>
+
+                <!-- 에러 알림 메시지 영역 -->
+                <div id="errorBox" class="alert-box error hidden"></div>
+            </section>
+
+            <!-- 오른쪽: 결과 미리보기 섹션 -->
+            <section class="card result-section">
+                <div class="result-header">
+                    <h2 class="section-title">📄 생성 결과 미리보기</h2>
+                    <!-- 작업 버튼 툴바 -->
+                    <div id="actionToolbar" class="action-toolbar hidden">
+                        <button type="button" id="copyBtn" class="btn btn-secondary">
+                            📋 결과 복사
+                        </button>
+                        <button type="button" id="downloadBtn" class="btn btn-secondary">
+                            💾 Markdown (.md) 다운로드
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 안내 플레이스홀더 (생성 전 표시) -->
+                <div id="placeholderView" class="placeholder-view">
+                    <div class="placeholder-icon">💡</div>
+                    <p>왼쪽에서 정보를 입력하고<br><strong>[생성하기]</strong> 버튼을 누르면 이곳에 AI 결과가 표시됩니다.</p>
+                </div>
+
+                <!-- 로딩 스피너 (생성 중 표시) -->
+                <div id="loadingView" class="loading-view hidden">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Gemini AI가 이력서와 포트폴리오를 작성하고 있습니다...</p>
+                    <p class="loading-subtext">약 5~10초 정도 소요될 수 있습니다.</p>
+                </div>
+
+                <!-- 최종 렌더링 결과 영역 -->
+                <div id="resultView" class="result-content markdown-body hidden"></div>
+            </section>
+        </main>
+
+        <!-- 푸터 -->
+        <footer class="footer">
+            <p>Powered by Flask & Google Gemini 2.0 Flash</p>
+        </footer>
+    </div>
+
+    <!-- 프론트엔드 비동기 자바스크립트 연결 -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
