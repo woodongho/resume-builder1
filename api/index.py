@@ -39,8 +39,9 @@ def get_gemini_client():
 @app.route("/")
 @app.route("/api")
 @app.route("/api/index")
+@app.route("/api/index.py")
 def index():
-    logger.info("홈페이지(index.html) 접속 요청")
+    logger.info("홈페이지(index.html) 접속 요청 (요청 경로: %s)", request.path)
     return render_template("index.html")
 
 
@@ -186,6 +187,28 @@ def generate():
             "success": False,
             "error": f"서버 처리 중 오류가 발생했습니다: {str(e)}"
         }), 500
+
+
+# 7. 에러 핸들러 (Vercel 환경에서의 디버깅 및 명확한 오류 안내)
+@app.errorhandler(404)
+def page_not_found(e):
+    logger.error("404 Not Found - 요청 경로: %s", request.path)
+    return jsonify({
+        "status": 404,
+        "error": "Not Found",
+        "requested_path": request.path,
+        "message": "요청하신 경로를 서버에서 찾을 수 없습니다."
+    }), 404
+
+
+@app.errorhandler(500)
+def server_error(e):
+    logger.error("500 Server Error - %s", str(e), exc_info=True)
+    return jsonify({
+        "status": 500,
+        "error": "Internal Server Error",
+        "detail": str(e)
+    }), 500
 
 
 # 로컬 직접 실행 진입점
