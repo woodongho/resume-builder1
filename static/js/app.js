@@ -254,4 +254,53 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         document.body.removeChild(tempTextArea);
     }
+
+    // 6. PWA Service Worker 등록 및 설치(Install) 프롬프트 연동
+    const installPwaBtn = document.getElementById("installPwaBtn");
+    let deferredPrompt = null;
+
+    // 6-1. Service Worker 등록
+    if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+            navigator.serviceWorker.register("/sw.js")
+                .then((registration) => {
+                    console.log("[PWA] Service Worker 등록 성공 (Scope):", registration.scope);
+                })
+                .catch((error) => {
+                    console.error("[PWA] Service Worker 등록 실패:", error);
+                });
+        });
+    }
+
+    // 6-2. PWA 설치 가능 시점 감지 (Chrome, Edge 등)
+    window.addEventListener("beforeinstallprompt", (e) => {
+        // 브라우저 기본 미니 정보 표시줄 방지
+        e.preventDefault();
+        deferredPrompt = e;
+        // 사용자에게 설치 버튼 노출
+        if (installPwaBtn) {
+            installPwaBtn.classList.remove("hidden");
+        }
+    });
+
+    // 6-3. 설치 버튼 클릭 시 프롬프트 팝업 표시
+    if (installPwaBtn) {
+        installPwaBtn.addEventListener("click", async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log("[PWA] 설치 선택 결과:", outcome);
+            deferredPrompt = null;
+            installPwaBtn.classList.add("hidden");
+        });
+    }
+
+    // 6-4. 설치 완료 시 버튼 숨김
+    window.addEventListener("appinstalled", () => {
+        console.log("[PWA] 앱이 성공적으로 설치되었습니다.");
+        if (installPwaBtn) {
+            installPwaBtn.classList.add("hidden");
+        }
+        deferredPrompt = null;
+    });
 });

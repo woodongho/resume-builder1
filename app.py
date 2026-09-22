@@ -1,6 +1,6 @@
 import os
 import logging
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from dotenv import load_dotenv
 from google import genai
 from google.genai import errors
@@ -33,6 +33,19 @@ def get_gemini_client():
 def index():
     logger.info("홈페이지(index.html) 접속 요청")
     return render_template("index.html")
+
+
+# 5-1. PWA 설정 파일 서빙 (루트 경로 매핑)
+@app.route("/manifest.json")
+def manifest():
+    return send_from_directory("static", "manifest.json", mimetype="application/manifest+json")
+
+
+@app.route("/sw.js")
+def service_worker():
+    response = send_from_directory("static", "sw.js", mimetype="application/javascript")
+    response.headers["Service-Worker-Allowed"] = "/"
+    return response
 
 
 # 6. AI 이력서 & 포트폴리오 생성 API 라우트 (POST /generate)

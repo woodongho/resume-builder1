@@ -30,11 +30,38 @@ body {
     margin-bottom: 28px;
 }
 
-.header h1 {
+.header-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+
+.header-main h1 {
     font-size: 2rem;
     font-weight: 800;
     color: #0f172a;
-    margin-bottom: 8px;
+    margin-bottom: 0;
+}
+
+.btn-pwa {
+    background-color: #ea580c;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(234, 88, 12, 0.25);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-pwa:hover {
+    background-color: #c2410c;
+    transform: translateY(-1px);
 }
 
 .header .subtitle {
